@@ -1,5 +1,10 @@
 // iathook.h
 
+/*
+ * iathook v1.01
+ * https://github.com/anzz1/iathook
+ */
+
 #ifndef __IATHOOK_H
 #define __IATHOOK_H
 
@@ -97,7 +102,7 @@ namespace Iat_hook
     return 0;
   }
 
-  void* detour_iat_func(HMODULE hModule, const char* szFuncName, void* pNewFunction, const char* szModName, const DWORD dwOrdinal) {
+  void* detour_iat_func(HMODULE hModule, const char* szFuncName, void* pNewFunction, const char* szModName, const DWORD dwOrdinal, BOOL pin) {
     void* pOrigFunction;
     DWORD old_rights, new_rights = PAGE_READWRITE;
     void** func_ptr = find_iat_func(hModule, szFuncName, szModName, dwOrdinal);
@@ -108,6 +113,12 @@ namespace Iat_hook
     pOrigFunction = *func_ptr;
     *func_ptr = pNewFunction;
     VirtualProtect(func_ptr, sizeof(void*), old_rights, &new_rights);
+
+    if (pin) {
+      HMODULE hm;
+      GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN, (LPCSTR)pOrigFunction, &hm);
+    }
+
     return pOrigFunction;
   }
 #ifdef __cplusplus
