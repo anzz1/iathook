@@ -109,9 +109,12 @@ namespace Iat_hook
     if (!func_ptr || *func_ptr == 0 || *func_ptr == pNewFunction)
       return 0;
 
-    VirtualProtect(func_ptr, sizeof(void*), new_rights, &old_rights);
+    if (!VirtualProtect(func_ptr, sizeof(void*), new_rights, &old_rights))
+      return 0;
+
     pOrigFunction = *func_ptr;
     *func_ptr = pNewFunction;
+
     VirtualProtect(func_ptr, sizeof(void*), old_rights, &new_rights);
 
     if (pin) {
