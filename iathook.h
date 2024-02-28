@@ -1,7 +1,7 @@
 // iathook.h
 
 /*
- * iathook v1.01
+ * iathook v1.02
  * https://github.com/anzz1/iathook
  */
 
@@ -11,7 +11,7 @@
 #include <windows.h>
 
 #if !defined(__forceinline) && ( defined(__GNUC__) || defined(__MINGW__) || defined (__clang__) )
-#define __forceinline __attribute__((always_inline))
+#define __forceinline inline __attribute__((always_inline))
 #endif
 
 __forceinline static int __strcmp(const char* s1, const char* s2) {
