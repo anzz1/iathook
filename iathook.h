@@ -1,7 +1,7 @@
 // iathook.h
 
 /*
- * iathook v1.02
+ * iathook v1.03
  * https://github.com/anzz1/iathook
  */
 
@@ -54,7 +54,7 @@ namespace Iat_hook
     img_nt_headers = (PIMAGE_NT_HEADERS)((size_t)img_dos_headers + img_dos_headers->e_lfanew);
     if (img_nt_headers->Signature != IMAGE_NT_SIGNATURE)
       return 0;
-    if (img_nt_headers->FileHeader.SizeOfOptionalHeader < 4) // OptionalHeader.Magic
+    if (img_nt_headers->FileHeader.SizeOfOptionalHeader < 96) // OptionalHeader.NumberOfRvaAndSizes
       return 0;
     if (img_nt_headers->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR_MAGIC || img_nt_headers->OptionalHeader.NumberOfRvaAndSizes < 2)
       return 0;
